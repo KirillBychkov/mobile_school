@@ -56,3 +56,6 @@ const styles = StyleSheet.create({
   wrapper: { flex: 1 },
   content: { flexGrow: 1 }
 });
+
+
+// <KeyboardStaticAvoid fullheight contentContainerStyle={styles.container}></KeyboardStaticAvoid>
