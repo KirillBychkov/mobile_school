@@ -24,7 +24,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const App: () => React$Node = () => {
+export const Home: () => React$Node = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -39,6 +39,7 @@ const App: () => React$Node = () => {
             </View>
           )}
           <Text style={{ fontSize: 20, color: 'green', textAlign: 'center' }}>Igor coder hi!</Text>
+          <Text style={{ fontSize: 20, color: 'green', textAlign: 'center' }}>Fuck you Kiril!</Text>
           <View style={styles.body}>
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>Step One</Text>
@@ -111,5 +112,3 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
 });
-
-export default App;
