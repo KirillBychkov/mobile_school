@@ -1,0 +1,6 @@
+module Pods_myscool_myscoolTests {
+  umbrella header "Pods-myscool-myscoolTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
