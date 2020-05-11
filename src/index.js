@@ -4,14 +4,18 @@ import { GatewayProvider } from 'react-gateway';
 // eslint-disable-next-line import/no-unresolved
 
 import { useScreens } from 'react-native-screens';
-import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
+import { ApolloProvider } from '@apollo/react-hooks';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import AsyncStorage from '@react-native-community/async-storage';
+
 import { ApolloLink } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
-import { ApolloProvider } from '@apollo/react-hooks';
+import { createUploadLink } from 'apollo-upload-client';
 
-const authLink = setContext((_, { headers }) => {
-    let user: any = localStorage.getItem('loginUser');
+const uploadLink = createUploadLink({ uri: 'http://ec2-35-180-30-110.eu-west-3.compute.amazonaws.com/graphql' });
+const authLink = setContext(async (_, { headers }) => {
+    let user: any = await AsyncStorage.getItem('loginUser');
     user = user ? JSON.parse(user) : null;
     return {
         headers: {
@@ -23,7 +27,11 @@ const authLink = setContext((_, { headers }) => {
 
 const cache = new InMemoryCache({
     dataIdFromObject: object => object.id,
-    link: ApolloLink.from([authLink]),
+});
+
+const client = new ApolloClient({
+    cache,
+    link: ApolloLink.from([authLink, uploadLink]),
     defaultOptions: {
         watchQuery: {
             fetchPolicy: 'cache-and-network',
@@ -33,8 +41,6 @@ const cache = new InMemoryCache({
         },
     },
 });
-// Create the client as outlined in the setup guide
-const client = new ApolloClient({ cache });
 
 import { Store } from './store';
 

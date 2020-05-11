@@ -23,8 +23,18 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {IsSchoolGQL} from "../../api/isSchool.graphql";
+import {useQuery} from "@apollo/react-hooks";
 
 export const Home: () => React$Node = () => {
+  const { loading, error, data } = useQuery(IsSchoolGQL);
+
+  console.log('______');
+  console.log('loading', loading);
+  console.log('error', error);
+  console.log('data', data);
+  console.log('______');
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
