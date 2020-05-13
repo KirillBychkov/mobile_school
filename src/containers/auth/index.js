@@ -8,19 +8,18 @@
 
 import React from 'react';
 import { useMutation } from "@apollo/react-hooks";
-import { Text } from "react-native";
+import { Text, StyleSheet, View } from "react-native";
 import { SignIn } from "../../api/auth.graphql";
+import { Input, KeyboardStaticAvoid, Button } from '../../components'
 
-export const Home: () => React$Node = () => {
-    const [login, setLogin] = useState('school');
-    const [password, setPassword] = useState('1111');
+
+export const Auth = () => {
+    const [login, setLogin] = React.useState('myschool');
+    const [password, setPassword] = React.useState('11111111');
     const [signIn, { loading, error, data }] = useMutation(SignIn);
 
-    const submit = async (e: any) => {
-        e.preventDefault();
-        try {
-            await signIn({ variables: { login, password } });
-        } catch {}
+    function submit() {
+        signIn({ variables: { login, password } });
     };
 
     console.log('______');
@@ -30,8 +29,26 @@ export const Home: () => React$Node = () => {
     console.log('______');
 
     return (
-        <>
+        <KeyboardStaticAvoid fullheight contentContainerStyle={styles.container}>
             <Text>Auth</Text>
-        </>
+            <Input
+                value={login}
+                onChange={setLogin}
+            />
+            <Input
+                value={password}
+                onChange={setPassword}
+            />
+            <Button text={'Submit'} onPress={submit} />
+        </KeyboardStaticAvoid>
     )
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: 20
+    }
+})

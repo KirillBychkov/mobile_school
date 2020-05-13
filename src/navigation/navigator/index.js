@@ -7,14 +7,17 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   Home,
-  Second
+  Second,
+  Auth
 } from '../../containers';
 import {
   HOME,
-  SECOND
+  SECOND,
+  AUTH
 } from '../../constants';
 import { PressableIcon, Icon, DrawerMenu } from '../../components';
 
+const LoginNav = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const HomeStackNav = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -74,6 +77,19 @@ export const Navigator = (): React.Node => {
     )
   }
 
+  function logOut() {
+    return (<LoginNav.Navigator initialRouteName={AUTH}>
+      <LoginNav.Screen
+        options={{
+          title: '',
+          headerStyle: styles.disableHeader
+        }}
+        name={AUTH}
+        component={Auth}
+      />
+    </LoginNav.Navigator>)
+  }
+
   function loginNav() {
     return (
       <>
@@ -86,7 +102,7 @@ export const Navigator = (): React.Node => {
 
   return (
     <>
-      {loginNav()}
+      {true ? logOut() : loginNav()}
     </>
 
   );
