@@ -1,17 +1,35 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { PressableIcon, Icon } from '..';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { actionLogin } from '../../store/actions'
 
-export const DrawerMenu = ({ nav }) => {
 
+type Props = {
+  login: (r: any) => void,
+}
+
+const mapDispatchToProps = {
+  login: actionLogin
+};
+
+export const DrawerMenu = compose(connect(null, mapDispatchToProps))(({ nav, login }: Props) => {
+
+  function redirectTo() {
+    login({ isLogin: false })
+  }
   return (
     <View style={styles.container}>
       <PressableIcon style={styles.close} onPress={() => nav.closeDrawer()}>
         <Icon icon={Icon.icons.close} width={20} height={20} />
       </PressableIcon>
+      <TouchableOpacity onPress={redirectTo}>
+        <Text>logout</Text>
+      </TouchableOpacity>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

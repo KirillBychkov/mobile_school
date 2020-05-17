@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-// import { compose } from 'recompose';
-// import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -22,7 +22,14 @@ const Tab = createBottomTabNavigator();
 const HomeStackNav = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-export const Navigator = (): React.Node => {
+const mapStateToProps = state => ({
+  isLogin: state.auth.login.isLogin
+});
+
+export const Navigator = compose(connect(mapStateToProps))((props): React.Node => {
+  const { isLogin } = props;
+
+  console.log('isLogin111', isLogin)
 
   function buttonBack(navigation) {
     return (
@@ -102,12 +109,12 @@ export const Navigator = (): React.Node => {
 
   return (
     <>
-      {true ? logOut() : loginNav()}
+      {!isLogin ? logOut() : loginNav()}
     </>
 
   );
-}
-// TODO refactor this file on small containers
+})
+
 const styles = StyleSheet.create({
   headerStyle: {
     // backgroundColor: colors.background,

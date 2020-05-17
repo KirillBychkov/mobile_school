@@ -6,27 +6,39 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useMutation } from "@apollo/react-hooks";
 import { Text, StyleSheet, View } from "react-native";
 import { SignIn } from "../../api/auth.graphql";
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { actionLogin } from '../../store/actions';
 import { Input, KeyboardStaticAvoid, Button } from '../../components'
 
+const mapDispatchToProps = {
+    loginAction: actionLogin
+};
 
-export const Auth = () => {
-    const [login, setLogin] = React.useState('myschool');
-    const [password, setPassword] = React.useState('11111111');
+export const Auth = compose(connect(null, mapDispatchToProps))(({ navigation, loginAction }: Props) => {
+    const [login, setLogin] = React.useState(''); // teacher819
+    const [password, setPassword] = React.useState(''); // 1111
     const [signIn, { loading, error, data }] = useMutation(SignIn);
+
+    useEffect(() => {
+        if (data) {
+            console.log('______');
+            console.log('loading', loading);
+            console.log('error', error);
+            console.log('data', data);
+            console.log('______');
+            loginAction({ isLogin: true });
+        }
+
+    }, [data])
 
     function submit() {
         signIn({ variables: { login, password } });
     };
-
-    console.log('______');
-    console.log('loading', loading);
-    console.log('error', error);
-    console.log('data', data);
-    console.log('______');
 
     return (
         <KeyboardStaticAvoid fullheight contentContainerStyle={styles.container}>
@@ -42,7 +54,7 @@ export const Auth = () => {
             <Button text={'Submit'} onPress={submit} />
         </KeyboardStaticAvoid>
     )
-};
+});
 
 const styles = StyleSheet.create({
     container: {
