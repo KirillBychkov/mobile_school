@@ -28,9 +28,7 @@ const mapStateToProps = state => ({
 
 export const Navigator = compose(connect(mapStateToProps))((props): React.Node => {
   const { isLogin } = props;
-
-  console.log('isLogin111', isLogin)
-
+  console.log('isLogin', isLogin)
   function buttonBack(navigation) {
     return (
       <PressableIcon style={styles.back} onPress={() => navigation.goBack()}>

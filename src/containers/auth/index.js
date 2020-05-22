@@ -20,8 +20,8 @@ const mapDispatchToProps = {
 };
 
 export const Auth = compose(connect(null, mapDispatchToProps))(({ navigation, loginAction }: Props) => {
-    const [login, setLogin] = React.useState(''); // teacher819
-    const [password, setPassword] = React.useState(''); // 1111
+    const [login, setLogin] = React.useState('teacher819'); // teacher819
+    const [password, setPassword] = React.useState('1111'); // 1111
     const [signIn, { loading, error, data }] = useMutation(SignIn);
 
     useEffect(() => {
@@ -31,7 +31,7 @@ export const Auth = compose(connect(null, mapDispatchToProps))(({ navigation, lo
             console.log('error', error);
             console.log('data', data);
             console.log('______');
-            loginAction({ isLogin: true });
+            loginAction({ ...data, ...{ isLogin: true } });
         }
 
     }, [data])

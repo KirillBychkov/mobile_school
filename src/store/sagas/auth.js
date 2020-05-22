@@ -4,7 +4,8 @@ import { call, put, takeEvery, select } from 'redux-saga/effects';
 // import { CommonActions } from '@react-navigation/native';
 import { getFormValues } from 'redux-form';
 import Actions from 'redux-form/lib/actions';
-import { setLoginData, actionTriggerSpinner } from '../actions';
+import { Storage } from '../../utils/storage';
+import { setLoginData, setUserData, actionTriggerSpinner } from '../actions';
 import { Keyboard, Alert } from 'react-native';
 
 import {
@@ -20,10 +21,11 @@ function* sagaAuthLogin({ payload }) {
 	// const formValues = yield select(getFormValues());
 
 	// const {  } = formValues;
-	yield put(setLoginData(payload));
 	try {
 		yield put(actionTriggerSpinner({ app: true }));
-
+		yield put(setLoginData({ isLogin: payload.isLogin }));
+		yield put(setUserData(payload.signIn || null));
+		Storage.set({ key: 'loginUser', value: JSON.stringify(payload) })
 		// const response = yield call(Requests., { values });
 
 	} catch (e) {

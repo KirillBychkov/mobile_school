@@ -10,11 +10,15 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {
   NavigationContainer,
 } from '@react-navigation/native';
+import { GatewayProvider } from 'react-gateway';
+// eslint-disable-next-line import/no-unresolved
+import { ApolloProvider } from '@apollo/react-hooks';
 
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga';
 
+import { client } from './apollo';
 import sagas from './sagas';
 
 import {
@@ -80,18 +84,22 @@ sagaMiddleware.run(sagas);
 const persistor = persistStore(store);
 
 export const Store = (): React.Node => (
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <SafeAreaProvider>
-        <NavigationContainer
-          onStateChange={state => {
-            console.log('Moved to screen', state);
-          }}
-        >
-          <Navigator />
-        </NavigationContainer>
-      </SafeAreaProvider >
-    </PersistGate>
-  </Provider>
+  <ApolloProvider client={client}>
+    <GatewayProvider>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <SafeAreaProvider>
+            <NavigationContainer
+              onStateChange={state => {
+                console.log('Moved to screen', state);
+              }}
+            >
+              <Navigator />
+            </NavigationContainer>
+          </SafeAreaProvider >
+        </PersistGate>
+      </Provider>
+    </GatewayProvider>
+  </ApolloProvider>
 
 );

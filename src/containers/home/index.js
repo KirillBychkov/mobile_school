@@ -10,27 +10,25 @@ import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
   StatusBar,
 } from 'react-native';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { IsSchoolGQL } from "../../api/isSchool.graphql";
+import { useQuery } from "@apollo/react-hooks";
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import {IsSchoolGQL} from "../../api/isSchool.graphql";
-import {useQuery} from "@apollo/react-hooks";
+const mapStateToProps = state => ({
+  user: state.auth.user
+});
 
-export const Home: () => React$Node = () => {
+export const Home: () => React$Node = compose(connect(mapStateToProps))(({ user }) => {
   const { loading, error, data } = useQuery(IsSchoolGQL);
 
   console.log('______');
   console.log('loading', loading);
+  console.log('user', user);
   console.log('error', error);
   console.log('data', data);
   console.log('______');
@@ -38,87 +36,22 @@ export const Home: () => React$Node = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <Text style={{ fontSize: 20, color: 'green', textAlign: 'center' }}>Igor coder hi!</Text>
-          <Text style={{ fontSize: 20, color: 'green', textAlign: 'center' }}>Fuck you Kiril!</Text>
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <Text style={{ fontSize: 20, color: '#fff', textAlign: 'center' }}>{user.teacher.firstName}</Text>
+          <Text style={{ fontSize: 20, color: '#fff', textAlign: 'center' }}>{user.teacher.lastName}</Text>
+        </View>
+
       </SafeAreaView>
     </>
   );
-};
+});
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#000'
+  }
 });
