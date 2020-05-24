@@ -14,10 +14,10 @@ import {
 } from 'react-native';
 
 
-export const Second: () => React$Node = () => {
+export const Schedule: () => React$Node = () => {
   return (
     <View style={styles.container}>
-      <Text>Second Screen</Text>
+      <Text>Schedule Screen</Text>
     </View>
   );
 };

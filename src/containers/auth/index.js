@@ -8,7 +8,7 @@
 
 import React, { useEffect } from 'react';
 import { useMutation } from "@apollo/react-hooks";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, Image } from "react-native";
 import { SignIn } from "../../api/auth.graphql";
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -25,33 +25,45 @@ export const Auth = compose(connect(null, mapDispatchToProps))(({ navigation, lo
     const [signIn, { loading, error, data }] = useMutation(SignIn);
 
     useEffect(() => {
-        if (data) {
-            console.log('______');
-            console.log('loading', loading);
-            console.log('error', error);
-            console.log('data', data);
-            console.log('______');
+        if (data && !data.school) {
             loginAction({ ...data, ...{ isLogin: true } });
         }
+    }, [data]);
 
-    }, [data])
-
-    function submit() {
-        signIn({ variables: { login, password } });
-    };
+    async function submit() {
+        await signIn({variables: {login, password}});
+    }
 
     return (
         <KeyboardStaticAvoid fullheight contentContainerStyle={styles.container}>
-            <Text>Auth</Text>
+            <Image source={require('../../logo/logo2.png')} />
+            <Text style={{ fontSize: 30, marginBottom: 20, color: '#137cbd' }}>Авторизація</Text>
             <Input
+                style={{ borderColor: '#137cbd' }}
+                placeholder={"Ваш пароль"}
                 value={login}
                 onChange={setLogin}
             />
             <Input
+                style={{ borderColor: '#137cbd' }}
+                placeholder={"Ваш логін"}
                 value={password}
                 onChange={setPassword}
+                secureTextEntry={true}
             />
-            <Button text={'Submit'} onPress={submit} />
+            <Button
+                buttonStyle={{
+                    borderColor: '#137cbd',
+                    marginBottom: 10,
+                }}
+                textStyle={{
+                    color: '#137cbd',
+                    fontSize: 18
+                }}
+                text={'Увійти в аккаунт'}
+                onPress={submit}
+            />
+            <Text style={{ color: 'red' }}>{error? error.message.split(': ')[1] : ''}</Text>
         </KeyboardStaticAvoid>
     )
 });
@@ -63,4 +75,4 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 20
     }
-})
+});

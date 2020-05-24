@@ -7,13 +7,17 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   Home,
-  Second,
+  Schedule,
+  Contacts,
+  Dairy,
   Auth
 } from '../../containers';
 import {
   HOME,
-  SECOND,
-  AUTH
+  DAIRY,
+  SCHEDULE,
+  AUTH,
+  CONTACTS
 } from '../../constants';
 import { PressableIcon, Icon, DrawerMenu } from '../../components';
 
@@ -28,14 +32,14 @@ const mapStateToProps = state => ({
 
 export const Navigator = compose(connect(mapStateToProps))((props): React.Node => {
   const { isLogin } = props;
-  console.log('isLogin', isLogin)
+
   function buttonBack(navigation) {
     return (
       <PressableIcon style={styles.back} onPress={() => navigation.goBack()}>
         <Icon icon={Icon.icons.close} width={20} height={20} />
       </PressableIcon>
     )
-  };
+  }
 
   function homeNavigator() {
     return (<HomeStackNav.Navigator initialRouteName={HOME}>
@@ -55,15 +59,16 @@ export const Navigator = compose(connect(mapStateToProps))((props): React.Node =
     return (
       <Tab.Navigator
         initialRouteName={HOME}
-        screenOptions={({ route }) => ({
+        screenOptions={({ route }) => Icon.icons[route.name]? ({
           tabBarIcon: ({ focused }) => {
+            console.log(route);
             return (
               <Icon
-                icon={Icon.icons.close} width={20} height={20}
+                icon={Icon.icons[route.name]} width={20} height={20}
               />
             );
           }
-        })}
+        }) : ({})}
         tabBarOptions={{
           style: styles.tabbar,
           activeTintColor: 'transparent',
@@ -75,8 +80,16 @@ export const Navigator = compose(connect(mapStateToProps))((props): React.Node =
           component={homeNavigator}
         />
         <Tab.Screen
-          name={SECOND}
-          component={Second}
+            name={SCHEDULE}
+            component={Schedule}
+        />
+        <Tab.Screen
+            name={CONTACTS}
+            component={Contacts}
+        />
+        <Tab.Screen
+            name={DAIRY}
+            component={Dairy}
         />
       </Tab.Navigator>
     )
@@ -109,9 +122,8 @@ export const Navigator = compose(connect(mapStateToProps))((props): React.Node =
     <>
       {!isLogin ? logOut() : loginNav()}
     </>
-
   );
-})
+});
 
 const styles = StyleSheet.create({
   headerStyle: {

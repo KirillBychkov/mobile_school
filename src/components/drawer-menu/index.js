@@ -15,9 +15,8 @@ const mapDispatchToProps = {
 };
 
 export const DrawerMenu = compose(connect(null, mapDispatchToProps))(({ nav, login }: Props) => {
-
   function redirectTo() {
-    nav.closeDrawer()
+    nav.closeDrawer();
     login({ isLogin: false })
   }
   return (

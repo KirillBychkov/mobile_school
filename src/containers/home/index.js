@@ -16,30 +16,23 @@ import {
 } from 'react-native';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { IsSchoolGQL } from "../../api/isSchool.graphql";
-import { useQuery } from "@apollo/react-hooks";
+import { getUserInfo } from "../../functions";
 
 const mapStateToProps = state => ({
   user: state.auth.user
 });
 
 export const Home: () => React$Node = compose(connect(mapStateToProps))(({ user }) => {
-  const { loading, error, data } = useQuery(IsSchoolGQL);
-
-  console.log('______');
-  console.log('loading', loading);
-  console.log('user', user);
-  console.log('error', error);
-  console.log('data', data);
-  console.log('______');
+  const { userInfo, roleText }  = getUserInfo(user);
 
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.container}>
-          <Text style={{ fontSize: 20, color: '#fff', textAlign: 'center' }}>{user.teacher.firstName}</Text>
-          <Text style={{ fontSize: 20, color: '#fff', textAlign: 'center' }}>{user.teacher.lastName}</Text>
+          <Text style={{ fontSize: 20, color: '#fff', textAlign: 'center' }}>{roleText}</Text>
+          <Text style={{ fontSize: 20, color: '#fff', textAlign: 'center' }}>{userInfo.firstName}</Text>
+          <Text style={{ fontSize: 20, color: '#fff', textAlign: 'center' }}>{userInfo.lastName}</Text>
         </View>
 
       </SafeAreaView>

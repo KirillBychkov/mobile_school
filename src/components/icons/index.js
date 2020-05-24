@@ -4,9 +4,17 @@ import * as React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 
 import close from './close.svg';
+import HOME from './home.svg';
+import SCHEDULE from './schedule.svg';
+import CONTACTS from './contacts.svg';
+import DAIRY from './dairy.svg';
 
 const Icons = {
-	close
+	close,
+	HOME,
+	SCHEDULE,
+	CONTACTS,
+	DAIRY
 };
 
 type IProps = {
